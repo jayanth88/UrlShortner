@@ -2,26 +2,24 @@ from flask import Flask
 from flask import redirect
 from flask import render_template
 from flask import url_for
-from pymongo import MongoClient
+from flask import request
+
+from controller.urlProcessor import UrlProcessor
+
 
 app = Flask(__name__)
-
-client = MongoClient("mongodb://mongodb0.example.net:27017")
+processor= UrlProcessor()
 
 @app.route('/')
 def hello_world():
-    return '<H1>Hello World!</h1>'
+    return render_template('index.html')
 
 
-@app.route('/mongo')
-def hello_mongo():
-    print url_for('hello_mongo')
-    return render_template('other.html')
-
-@app.route('/show_entries')
-def hello_entires():
-    print url_for('show_entries')
-    return render_template('other.html')
+@app.route('/submit', methods=['POST'])
+def submit_url_request():
+    print request.form['urlName']
+    url_id = processor.processUrl(request.form['urlName'])
+    return str(url_id)
 
 
 if __name__ == '__main__':
