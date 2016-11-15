@@ -37,33 +37,27 @@ class UrlProcessor:
     # TODO
 
     def encodeBase62(self,inputId):
-        print inputId
-        arr = []
-        num = inputId
-        while num:
-            remainder = num % self.BASE62_BASE
-            num = num / self.BASE62_BASE
-            arr.append(self.BASE62_CHAR[remainder])
-        print arr
+        if inputId ==0 :
+          return self.BASE62_CHAR[0]
         arr =[]
-        i=0
-        while i>0:
-            candidateChar = inputId[i-1]
-            val , rem = divmod(ord(candidateChar),self.BASE62_BASE)
+        while inputId:
+            inputId,rem = divmod(inputId,self.BASE62_BASE)
             arr.append(self.BASE62_CHAR[rem])
-            i = i-1
-        print arr.reverse()
+        arr.reverse()
+        return ''.join(arr)
+
+
 
 # TODO
     def decodeBase62(self,encodedInput):
-        arr = []
-
-        res = 0
-        limit = len(encodedInput)
-        for i in xrange(limit):
-            res = self.BASE62_CHAR[encodedInput[i]] * 62 + res
-
-        return res
+        strlen = len(encodedInput)
+        num = 0
+        idx = 0
+        for char in encodedInput:
+            power = (strlen - (idx +1))
+            num += (self.BASE62_BASE ** power) * self.BASE62_CHAR.index(char)
+            idx+=1
+        return num
 
 def main():
     db = client['url_shortner']
@@ -78,8 +72,8 @@ def main():
     vl =  UrlProcessor()
 
     # TODO
-    # vl.encodeBase62(545)
-    # print vl.decodeBase62("n8")
+    print vl.encodeBase62(545)
+    print vl.decodeBase62("8n")
     print vl.getNextSequence()
 
 
