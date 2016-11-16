@@ -17,7 +17,7 @@ def hello_world():
 
 @app.route('/submit', methods=['POST'])
 def submit_url_request():
-    print request.form['urlName']
+    print str('VALUE :'+ request.form['urlName'])
     url_id = processor.processUrl(request.form['urlName'])
     return str(url_id)
 
